@@ -1,6 +1,6 @@
 import './App.css';
 import Categories from './components/categories/categories.component';
-function App() {
+const App = () => {
   const categories = [
     {
       "id": 1,
