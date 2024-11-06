@@ -1,39 +1,32 @@
-import './App.css';
-import Categories from './components/categories/categories.component';
+import { Routes, Route } from "react-router-dom";
+import Home from './routes/home/home.component'
+import Navigation from './routes/navigation/navigation.component'
+import Authentication from './routes/authentication/authentication.component'
 const App = () => {
-  const categories = [
-    {
-      "id": 1,
-      "title": "Hats",
-      "imageUrl": "https://i.ibb.co/cvpntL1/hats.png"
-    },
-    {
-      "id": 2,
-      "title": "Jackets",
-      "imageUrl": "https://i.ibb.co/px2tCc3/jackets.png"
-    },
-    {
-      "id": 3,
-      "title": "Sneakers",
-      "imageUrl": "https://i.ibb.co/0jqHpnp/sneakers.png"
-    },
-    {
-      "id": 4,
-      "title": "Women",
-      "imageUrl": "https://i.ibb.co/GCCdy8t/womens.png"
-    },
-    {
-      "id": 5,
-      "title": "Men",
-      "imageUrl": "https://i.ibb.co/R70vBrQ/men.png"
-    }
-  ]
+  // window.addEventListener('error', function(e){
+  //   // prevent React's listener from firing
+  //   e.stopImmediatePropagation();
+  //   // prevent the browser's console error message 
+  //   e.preventDefault();
+  // });
+const Shop =()=>{
+return (
+
+  <h1>shop man</h1>
+);  
+}
 
   return (
     <div className="App">
-      <Categories categories={categories} />
+      <Routes>
+        <Route path="/" element={<Navigation />}>
+          <Route index element={<Home />} />
+          <Route path="shop" element={<Shop />} />
+          <Route path="auth" element={<Authentication />} />
+        </Route>
+      </Routes>
     </div>
-  );
+    );
 }
 
 export default App;
