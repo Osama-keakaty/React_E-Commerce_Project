@@ -7,13 +7,16 @@ import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signOut,
+    onAuthStateChanged,
 } from 'firebase/auth';
 import {
     doc,
     getDoc,
     setDoc,
-    getFirestore
+    getFirestore, 
+    // onAuthStateChanged,
 } from 'firebase/firestore'
+
 
 //! bring our firebase sentance data
 const firebaseConfig = {
@@ -55,7 +58,7 @@ export const createUserDocumentFromAuth = async (userAuth, additional = {}) => {
     // check if that user with that id exist 
     if (!userSnapshot.exists()) {
         // if Not, create a user's doc by taking the user's name and email 
-        const { displayName, email } = userAuth;
+        const { displayName, email } = userAuth; 
         // and determine the time that he loged in.
         const createdAt = new Date();
 
@@ -86,7 +89,12 @@ export const createAuthUserWithEmailAndPassword = async (email, password) => {
 
         return await createUserWithEmailAndPassword(auth, email, password);
     } catch (error) {
-        alert(error.message)
+        if (error.code === 'auth/email-already-in-use') {
+            alert('Cannot create user, email already in use')
+        } else {
+
+            alert(error.message)
+        }
     }
 };
 
@@ -96,6 +104,9 @@ export const signInUserWithEmailAndPassword = async (email, password) => {
     try {
         return await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
+        if (error.code === 'auth/invalid-credential') {
+            alert('Wrong email or password')
+        }
         console.log("error", error.message)
     }
 }
@@ -110,5 +121,8 @@ export const signOutUser = async () => {
     }
 }
 
-
+//! build on auth changed listener
+export const onAuthStateChangedListener = (callback) => {
+    return onAuthStateChanged(auth, callback);    
+}
 

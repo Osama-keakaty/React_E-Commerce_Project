@@ -8,7 +8,11 @@
     border: 1px solid black;
     margin: 0 7.5px 15px;
     overflow: hidden;
-
+    border-radius:5px ;
+    -webkit-border-radius:5px ;
+    -moz-border-radius:5px ;
+    -ms-border-radius:5px ;
+    -o-border-radius:5px ;
     &:hover {
         cursor: pointer;
 

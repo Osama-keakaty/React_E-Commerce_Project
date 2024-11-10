@@ -1,15 +1,16 @@
-import { useState } from "react";
-import { createUserDocumentFromAuth, signInWithGooglePopup, signInUserWithEmailAndPassword } from '../../utils/firebase/firebase.utils.js';
+import { useState, useContext } from "react";
+import { createUserDocumentFromAuth, signInWithGooglePopup, signInUserWithEmailAndPassword, signOutUser } from '../../utils/firebase/firebase.utils.js';
 
 import FormInput from "../form-input/form-input.component";
 import './sign-in-form.styles.scss';
 import Button from "../button/button.component";
+import { UserContext } from "../../contexts/user.context.jsx";
 const defaultSignInFields = {
     email: '',
     password: ''
 }
-
 const SignInForm = () => {
+    const { currentUser } = useContext(UserContext);
     const [signInFields, setSignInFields] = useState(defaultSignInFields);
     const { email, password } = signInFields;
 
@@ -25,19 +26,21 @@ const SignInForm = () => {
     const emailAndPasswordSignIn = async (event) => {
         event.preventDefault();
         try {
-            const {user} = await signInUserWithEmailAndPassword(email, password);
-            console.log("user", user);
+            const { user } = await signInUserWithEmailAndPassword(email, password);
             await createUserDocumentFromAuth(user);
-
             setSignInFields(defaultSignInFields);
         } catch (error) {
             if (error.code === "auth/invalid-credential") {
                 console.log("invalid email or password");
-                
+
             }
             console.log("error", error.message)
         }
 
+    }
+
+    const signOutHandler = () => {
+        signOutUser();
     }
 
     const onChangeSignInHadler = (event) => {
@@ -71,21 +74,14 @@ const SignInForm = () => {
                     }}
                 />
                 <div className="buttons-container">
-                    <Button
-                        children={"SIGN IN"}
-                        type='submit'
-                    />
-                    {/* TODO - import signOutUser` from utils/firebase/firebase.utils.js` */}
-                    {/* <Button 
-                children={"SIGN OUT"} 
-                onClick={signOutUser}
-                /> */}
-                    <Button
-                        buttonType="google"
-                        type="button"
-                        children={"GOOGLE SIGN IN"}
-                        onClick={signInWithGoogle}
-                    />
+
+                    {currentUser ?
+                        <Button buttonType="signout" children={"SIGN OUT"} onClick={signOutHandler} />
+                        :
+                        <Button children={"SIGN IN"} type="submit" />
+                    }
+
+                    <Button buttonType="google" type="button" children={"GOOGLE SIGN IN"} onClick={signInWithGoogle} />
                 </div>
             </form>
         </div>

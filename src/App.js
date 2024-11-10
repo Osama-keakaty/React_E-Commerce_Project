@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from './routes/home/home.component'
 import Navigation from './routes/navigation/navigation.component'
 import Authentication from './routes/authentication/authentication.component'
+import Shop from './routes/shop/shop.component'
 const App = () => {
   // window.addEventListener('error', function(e){
   //   // prevent React's listener from firing
@@ -9,15 +10,10 @@ const App = () => {
   //   // prevent the browser's console error message 
   //   e.preventDefault();
   // });
-const Shop =()=>{
-return (
 
-  <h1>shop man</h1>
-);  
-}
 
   return (
-    <div className="App">
+    <div className="App" >
       <Routes>
         <Route path="/" element={<Navigation />}>
           <Route index element={<Home />} />

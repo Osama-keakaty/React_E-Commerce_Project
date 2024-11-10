@@ -1,8 +1,11 @@
 import { useState } from "react";
-import { createAuthUserWithEmailAndPassword } from '../../utils/firebase/firebase.utils'
+import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from '../../utils/firebase/firebase.utils'
 import FormInput from "../form-input/form-input.component";
 import './sign-up-form.styles.scss';
 import Button from "../button/button.component";
+
+
+
 
 const defaultFormData = {
     displayName: '',
@@ -21,22 +24,16 @@ const SignUpForm = () => {
         event.preventDefault();
         if (formFields.password !== formFields.confirmPassword) {
             console.log("passwords are not matched");
-            return false;
+            return;
         }
         try {
             // TODO you need to create a user in firebase and import createAuthUserWithEmailAndPassword function
             const { user } = await createAuthUserWithEmailAndPassword(email, password);
-            console.log("user", user);
+            await createUserDocumentFromAuth(user, { displayName, email });
             // the additional object (the second argument ) must contain the same name values in createUserDocumentFromAuth function    
-            // await createUserDocumentFromAuth(user, { displayName, email });
             setFormFields(defaultFormData);
-            return true;
         } catch (error) {
-            if (error.code === "auth/email-already-in-use") {
-                alert(error);
-            } else {
-                console.log("error", error.message)
-            }
+            console.log("error", error.message)
         }
     }
     const onChangeHandlerFunction = (event) => {
@@ -101,7 +98,7 @@ const SignUpForm = () => {
                 />
                 <Button
                     children={"SIGN UP"}
-                    type='submit'/>
+                    type='submit' />
             </form>
         </div>
     );
