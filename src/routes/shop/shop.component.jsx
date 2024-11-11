@@ -8,15 +8,13 @@ const Shop = () => {
         <div className="product-cards-container">
             {
                 products.map(
-                    ({ imageUrl, id, name, price }) =>
+                    (product) => {
 
-                        <ProductCard
-                            key={id}
-                            name={name}
-                            imgURl={imageUrl}
-                            price={price}
-                        />
-                )
+                        return (<ProductCard
+                            key={product.id}
+                            product={product}
+                        />);
+                    })
             }
         </div>
     );
