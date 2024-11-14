@@ -12,19 +12,19 @@ const App = () => {
   //   e.preventDefault();
   // });
 
-
   return (
     <div className="App" >
       <Routes>
         <Route path="/" element={<Navigation />}>
           <Route index element={<Home />} />
-          <Route path="shop" element={<Shop />} />
-          <Route path='checkout' element={<Checkout/>}/>
+          {/* //! /* in shop allows the Shop component to render content based on the nested path or to manage its own nested routes. */}
+          <Route path="shop/*" element={<Shop />} />
+          <Route path='checkout' element={<Checkout />} />
           <Route path="auth" element={<Authentication />} />
         </Route>
       </Routes>
     </div>
-    );
+  );
 }
 
 export default App;

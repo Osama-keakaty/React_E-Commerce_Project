@@ -13,8 +13,11 @@ import {
     doc,
     getDoc,
     setDoc,
-    getFirestore, 
-    // onAuthStateChanged,
+    getFirestore,
+    collection, // to get collection reference (like userRef)
+    writeBatch, // to invoke every commits at once 
+    query,
+    getDocs
 } from 'firebase/firestore'
 
 
@@ -31,23 +34,21 @@ const firebaseConfig = {
 //! Initialize Firebase
 initializeApp(firebaseConfig);
 
-
-//! build sign-in application using google provider
-// create google provider with specific parameters
+//! create sign-in application using google provider with specific parameters
 const provider = new GoogleAuthProvider();
 provider.setCustomParameters({
     prompt: "select_account"
 });
-// create the auth (it is a singleton in application and keeps track the auth in this variable)
+//! create the auth (it is a singleton in application and keeps track the auth in this variable)
 export const auth = getAuth();
 
-// create a sign in with popup 
+//! create a sign in with popup 
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 
-//! insert a user data 
-// initialize our db 
+//! initialize our db to use it for checking if a collection is exist.   
 export const db = getFirestore();
-// create an async function to check if this is doc is exist and otherwise create one  
+
+//! create an async function to check if this is doc is exist and otherwise create one  
 export const createUserDocumentFromAuth = async (userAuth, additional = {}) => {
     // if we didn't recieve userAuth don't run the function 
     if (!userAuth) return;
@@ -58,7 +59,7 @@ export const createUserDocumentFromAuth = async (userAuth, additional = {}) => {
     // check if that user with that id exist 
     if (!userSnapshot.exists()) {
         // if Not, create a user's doc by taking the user's name and email 
-        const { displayName, email } = userAuth; 
+        const { displayName, email } = userAuth;
         // and determine the time that he loged in.
         const createdAt = new Date();
 
@@ -78,7 +79,6 @@ export const createUserDocumentFromAuth = async (userAuth, additional = {}) => {
     // return the new or exist user 
     return userDocRef
 };
-
 
 //! build sign up task
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
@@ -111,7 +111,6 @@ export const signInUserWithEmailAndPassword = async (email, password) => {
     }
 }
 
-
 //! build sign out task
 export const signOutUser = async () => {
     try {
@@ -123,6 +122,36 @@ export const signOutUser = async () => {
 
 //! build on auth changed listener
 export const onAuthStateChangedListener = (callback) => {
-    return onAuthStateChanged(auth, callback);    
+    return onAuthStateChanged(auth, callback);
 }
 
+//! create add collection and documents to our Db 
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+    // create a collection reference 
+    const collectionRef = collection(db, collectionKey);
+    // All operations in a batch are committed together. 
+    const batch = writeBatch(db)
+    // add the object into our db 
+    objectsToAdd.forEach(object => {
+        const docRef = doc(collectionRef, object.title.toLowerCase());
+        batch.set(docRef, object)
+        console.log('done')
+    });
+    // this line will commit the whole objects batch operation at the same time.
+    await batch.commit()
+
+};
+
+
+//! function to get categories from db
+export const getCategoriesAndDocuments = async () => {
+    const collectionRef = collection(db, 'categories');
+    const q = query(collectionRef);
+    const querySnapshot = await getDocs(q)
+    const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
+        const {title,items} =docSnapshot.data();
+        acc[title.toLowerCase()]=items;
+        return acc;
+    },{});
+    return categoryMap;
+}  

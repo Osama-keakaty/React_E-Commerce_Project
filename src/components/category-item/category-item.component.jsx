@@ -1,18 +1,25 @@
-import './category-item.styles.scss';
+import {DirectoryItemContainer,Body,BackgroundImage} from  './category-item.styles.jsx';
+import { useNavigate } from 'react-router-dom';
 const CategoryItem = ({ category }) => {
+    const navigate = useNavigate()
+    const navigateToCategoryPage = (title)=>{
+        navigate(`shop/${title}`)
+    }
     const { title, imageUrl } = category
     return (
-        <div className="category-container">
+        <DirectoryItemContainer onClick={()=>navigateToCategoryPage(title.toLowerCase())}>
 
-            <div className="background-image" style={{
+            {/* <div className="background-image" style={{
                 backgroundImage: `url(${imageUrl})`
-            }}/>
+            }}/> */}
+            {/* //TODO you have to pass imageUrl as a props and use it in style file */}
+            <BackgroundImage imageUrl={imageUrl}/>
 
-            <div className="category-body-container">
+            <Body>
                 <h2>{title}</h2>
                 <p>SHOP NOW</p>
-            </div>
-        </div>
+            </Body>
+        </DirectoryItemContainer>
 
     );
 

@@ -3,7 +3,7 @@ import { createUserDocumentFromAuth, signInWithGooglePopup, signInUserWithEmailA
 
 import FormInput from "../form-input/form-input.component";
 import './sign-in-form.styles.scss';
-import Button from "../button/button.component";
+import Button,{BUTTON_TYPE_CLASSES} from "../button/button.component";
 import { UserContext } from "../../contexts/user.context.jsx";
 const defaultSignInFields = {
     email: '',
@@ -76,12 +76,12 @@ const SignInForm = () => {
                 <div className="buttons-container">
 
                     {currentUser ?
-                        <Button buttonType="signout" children={"SIGN OUT"} onClick={signOutHandler} />
+                        <Button buttonType={BUTTON_TYPE_CLASSES.signout} children={"SIGN OUT"} onClick={signOutHandler} />
                         :
                         <Button children={"SIGN IN"} type="submit" />
                     }
 
-                    <Button buttonType="google" type="button" children={"GOOGLE SIGN IN"} onClick={signInWithGoogle} />
+                    <Button buttonType={BUTTON_TYPE_CLASSES.google} type="button" children={"GOOGLE SIGN IN"} onClick={signInWithGoogle} />
                 </div>
             </form>
         </div>

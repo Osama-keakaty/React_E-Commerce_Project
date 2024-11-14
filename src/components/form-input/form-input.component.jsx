@@ -1,23 +1,22 @@
 
-import './form-input.styles.scss';
-const FormInput = ({ label,inputAttribute }) => {
+import { FormInputLabel, Input, Group } from './form-input.styles.jsx';
+const FormInput = ({ label, inputAttribute }) => {
 
     return (
-        <div className="group">
-            <input
-            className="form-input"
-            // pass props to input element
-                {... inputAttribute}
-                spellCheck={false}
-            />
-        {
-            
-        // if label exist render this label 
-            label && 
-            <label className={`${inputAttribute.value.length ? 'shrink' : ''} form-input-label`}>{label}</label>
-        } 
-        
-        </div>
+        <Group>
+            <Input
+                // pass props to input element
+                {...inputAttribute} spellCheck={false} />
+            {label &&
+                // if label exist render this label 
+                /* <label className={`${inputAttribute.value.length ? 'shrink' : ''} form-input-label`}>{label}</label> */ 
+                    (
+                        <FormInputLabel shrink={inputAttribute.value.length}>
+                        {label}
+                        </FormInputLabel>
+
+                    )}
+        </Group>
 
 
     );
