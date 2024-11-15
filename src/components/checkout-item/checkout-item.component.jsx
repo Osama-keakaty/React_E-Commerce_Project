@@ -29,7 +29,7 @@ return (
 &#10095;
 </div>
 </span>
-<span className='price'>{price}</span>
+<span className='price'>{price}$</span>
 <div onClick={removeItemHandler} className='remove-button'>&#10005;</div>
 </div>
 );
