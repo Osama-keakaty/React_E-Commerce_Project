@@ -22,7 +22,6 @@ const getButton = (buttontype=BUTTON_TYPE_CLASSES.base)=> (
 const Button = ({ children, buttonType, ...otherProps }) => {
     // TODO this way to change the state of the Tag that extend some features from the main one
     const CustomButton = getButton(buttonType)
-    console.log(CustomButton)
     return (
         <CustomButton {...otherProps}>{children}</CustomButton>
     );
