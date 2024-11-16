@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+const maxWidth='800px';
 export const BackgroundImage = styled.div`
         width: 100%;
         height: 100%;
@@ -8,6 +9,10 @@ export const BackgroundImage = styled.div`
 
 `
 export const Body = styled.div`
+        @media (max-width:${maxWidth}) {
+        height: 60px;
+        padding: 0 10px;
+        }
         height: 90px;
         padding: 0 25px;
         display: flex;
@@ -18,8 +23,10 @@ export const Body = styled.div`
         background-color: white;
         opacity: 0.7;
         position: absolute;
-
         h2 {
+        @media (max-width:${maxWidth}) {
+            font-size: 16px;
+        }
             font-weight: bold;
             margin: 0 6px 0;
             font-size: 22px;
@@ -28,6 +35,9 @@ export const Body = styled.div`
         }
 
         p {
+        @media (max-width:${maxWidth}) {
+            font-size: 10px;
+        }
             margin: 3px;
             font-weight: lighter;
             font-size: 14px;
