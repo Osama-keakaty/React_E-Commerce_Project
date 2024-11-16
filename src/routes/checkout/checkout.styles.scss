@@ -32,6 +32,9 @@ $min-width: 768px;
     }
 
     .total {
+        @media (max-width: $min-width) {
+            font-size: 20px;
+        }
         margin-top: 30px;
         margin-left: auto;
         font-size: 36px;
