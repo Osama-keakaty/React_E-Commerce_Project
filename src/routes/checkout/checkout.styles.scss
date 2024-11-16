@@ -1,19 +1,22 @@
 $min-width: 768px;
+
 .checkout-container {
     @media (max-width: $min-width) {
-       width: 100%;
+        width: 100%;
     }
+
     width: 55%;
     min-height: 90vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: auto ;
+    margin: auto;
 
     .checkout-header {
         @media (max-width: $min-width) {
             font-size: 10px;
         }
+
         font-size:14px;
         width: 100%;
         padding: 10px 0;
@@ -35,6 +38,7 @@ $min-width: 768px;
         @media (max-width: $min-width) {
             font-size: 20px;
         }
+
         margin-top: 30px;
         margin-left: auto;
         font-size: 36px;
