@@ -4,14 +4,44 @@ import Navigation from './routes/navigation/navigation.component'
 import Authentication from './routes/authentication/authentication.component'
 import Shop from './routes/shop/shop.component'
 import Checkout from './routes/checkout/checkout.component'
-const App = () => {
-  // window.addEventListener('error', function(e){
-  //   // prevent React's listener from firing
-  //   e.stopImmediatePropagation();
-  //   // prevent the browser's console error message 
-  //   e.preventDefault();
-  // });
+import { useEffect } from 'react';
 
+import { setCurrentUser } from "./store/user/user.action.js";
+import { useDispatch } from "react-redux";
+import { onAuthStateChangedListener, createUserDocumentFromAuth } from './utils/firebase/firebase.utils.js';
+
+
+import { getCategoriesAndDocuments } from "./utils/firebase/firebase.utils.js";
+import { setCategories } from './store/category/categories.action';
+
+const App = () => {
+
+  const dispatch = useDispatch();
+  
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChangedListener((user) => {
+      if (user) {
+        createUserDocumentFromAuth(user);
+      }
+      dispatch(setCurrentUser(user));
+    });
+
+    return unsubscribe;
+  }, [dispatch]);
+
+
+  useEffect(() => {
+    //TODO if we call async function inside useEffect callback function, we have to create a async function to do that 
+    const getCategoriesMap = async () => {
+
+      const categoriesArray = await getCategoriesAndDocuments();
+      dispatch(setCategories(categoriesArray));
+    }
+    getCategoriesMap();
+  }, [dispatch])
+
+  
   return (
     <div className="App" >
       <Routes>
