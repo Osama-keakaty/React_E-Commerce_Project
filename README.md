@@ -17,6 +17,6 @@ A modern and responsive eCommerce application built with React. This project all
 This application is deployed on [Netlify](https://www.netlify.com/), You can view the live application at [eCommerce project Demo](https://myecommercereactapp.netlify.app/)  
 
 
-##Clone
+## Clone
    ```bash  
    git clone https://github.com/Osama-keakaty/React_E-Commerce_Project.git
