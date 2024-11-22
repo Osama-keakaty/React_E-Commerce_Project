@@ -1,23 +1,35 @@
-import { CartContext } from '../../contexts/cart.context';
+// import { CartContext } from '../../contexts/cart.context';
 import { Outlet } from "react-router-dom";
 
 import { ReactComponent as CrwnLogo } from '../../assets/crown.svg'
-import { React, Fragment, useContext } from "react";
+import { React, Fragment } from "react";
 
+// ! using Context API
 // import { UserContext } from "../../contexts/user.context";
+
 import { signOutUser } from "../../utils/firebase/firebase.utils";
 import Cart from "../../components/cart/cart.component";
 import CartDropdown from "../../components/cart-dropdown/cart-dropdown.component";
 
 import { NavigationContainer, NavLink, NavLinks, LogoContainer } from './navigation.styles.jsx';
 
+// ! using Redux 
+// import { useSelector } from 'react-redux';
+// import { selectCurrentUser } from '../../store/user/user.selector.js';
 
-import { useSelector } from 'react-redux';
-import { selectCurrentUser } from '../../store/user/user.selector.js';
+//! using zustand
+import { useUserStore } from '../../zustand-store/user/user.store.js';
+import { useCartStore } from '../../zustand-store/cart/cart.store.js';
+import { useShallow } from 'zustand/shallow';
+
+
 const Navigation = () => {
-    const { isCartOpen } = useContext(CartContext)
+    // const { isCartOpen } = useContext(CartContext)
     // const { currentUser } = useContext(UserContext);
-    const currentUser = useSelector(selectCurrentUser)
+    // const currentUser = useSelector(selectCurrentUser)
+    const isCartOpen= useCartStore(useShallow((state)=>state.isCartOpen))
+
+    const currentUser = useUserStore(useShallow((state)=>state.currentUser))
     const signOutHandler = () => {
         signOutUser();
     }

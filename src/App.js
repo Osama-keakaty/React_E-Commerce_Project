@@ -6,42 +6,92 @@ import Shop from './routes/shop/shop.component'
 import Checkout from './routes/checkout/checkout.component'
 import { useEffect } from 'react';
 
-import { setCurrentUser } from "./store/user/user.action.js";
-import { useDispatch } from "react-redux";
+// import { setCurrentUser } from "./store/user/user.action.js";
+// import { useDispatch } from "react-redux";
+// import { setCategories } from './store/category/categories.action';
+
 import { onAuthStateChangedListener, createUserDocumentFromAuth } from './utils/firebase/firebase.utils.js';
-
-
 import { getCategoriesAndDocuments } from "./utils/firebase/firebase.utils.js";
-import { setCategories } from './store/category/categories.action';
 
+import { useShallow } from "zustand/shallow";
+import { useUserStore } from "./zustand-store/user/user.store.js";
+import { useCategoryStore } from "./zustand-store/category/category.store.js";
+import { useCartStore } from "./zustand-store/cart/cart.store.js";
 const App = () => {
 
-  const dispatch = useDispatch();
+//! using Redux 
+  // const dispatch = useDispatch();
   
+  // useEffect(() => {
+    //   const unsubscribe = onAuthStateChangedListener((user) => {
+  //     if (user) {
+    //       createUserDocumentFromAuth(user);
+    //     }
+    //     dispatch(setCurrentUser(user));
+    //   });
+    
+    //   return unsubscribe;
+    // }, [dispatch]);
+    
+    // useEffect(() => {
+    //   //TODO if we call async function inside useEffect callback function, we have to create a async function to do that 
+    //   const getCategoriesMap = async () => {
+      
+      //     const categoriesArray = await getCategoriesAndDocuments();
+      //     dispatch(setCategories(categoriesArray));
+    //   }
+    //   getCategoriesMap();
+    // }, [dispatch])
+
+    const setCurrentUser = useUserStore(useShallow((state) => state.setCurrentUser));
+    const setCategoriesMap = useCategoryStore(useShallow((state) => state.setCategoriesMap));
+    const setLoading = useCategoryStore(useShallow((state) => state.setLoading));
+    const { setProductNum, setTotalItemPrice, cartItems } = useCartStore(useShallow((state) => ({
+      cartItems: state.cartItems,
+      setProductNum: state.setProductNum,
+      setTotalItemPrice: state.setTotalItemPrice,
+  
+    })));
+
+    //! using Zustand 
+
+    useEffect(() => {
+      try {
+
+      const unsubscribe = onAuthStateChangedListener((user) => {
+        if (user) {
+          createUserDocumentFromAuth(user);
+        }
+        setCurrentUser(user);
+      });
+      return unsubscribe;
+    } catch (error){
+      console.log(error)
+    } 
+  }, [setCurrentUser]);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChangedListener((user) => {
-      if (user) {
-        createUserDocumentFromAuth(user);
+    //TODO if we call async function inside useEffect callback function, we have to create an async function to do that 
+    const getCatigoriesMap = async () => {
+      try {
+        const categoryMap = await getCategoriesAndDocuments();
+        setCategoriesMap(categoryMap);
+      } catch (error) {
+        console.log(error)
+      }finally{
+        setLoading(false)
       }
-      dispatch(setCurrentUser(user));
-    });
-
-    return unsubscribe;
-  }, [dispatch]);
-
+    }
+    getCatigoriesMap();
+  }, [setCategoriesMap, setLoading]);
 
   useEffect(() => {
-    //TODO if we call async function inside useEffect callback function, we have to create a async function to do that 
-    const getCategoriesMap = async () => {
+    const totalPriceValue = cartItems.reduce((total, cartItem) => total + (cartItem.price * cartItem.quantity), 0)
+    setTotalItemPrice(totalPriceValue);
+    const newProductNum = cartItems.reduce((total, cartItem) => total + cartItem.quantity, 0);
+    setProductNum(newProductNum);
+  }, [cartItems, setProductNum, setTotalItemPrice]);
 
-      const categoriesArray = await getCategoriesAndDocuments();
-      dispatch(setCategories(categoriesArray));
-    }
-    getCategoriesMap();
-  }, [dispatch])
-
-  
   return (
     <div className="App" >
       <Routes>

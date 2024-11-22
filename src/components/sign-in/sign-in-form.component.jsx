@@ -5,15 +5,17 @@ import FormInput from "../form-input/form-input.component";
 import './sign-in-form.styles.scss';
 import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
 
-import { useSelector } from "react-redux";
-import { selectCurrentUser } from "../../store/user/user.selector.js";
-
+// import { useSelector } from "react-redux";
+// import { selectCurrentUser } from "../../store/user/user.selector.js";
+import { useUserStore } from "../../zustand-store/user/user.store.js";
+import { useShallow } from "zustand/shallow";
 const defaultSignInFields = {
     email: '',
     password: ''
 }
 const SignInForm = () => {
-    const currentUser = useSelector(selectCurrentUser);
+    const currentUser = useUserStore(useShallow((state)=>state.currentUser))
+    // const currentUser = useSelector(selectCurrentUser);
     const [signInFields, setSignInFields] = useState(defaultSignInFields);
     const { email, password } = signInFields;
 

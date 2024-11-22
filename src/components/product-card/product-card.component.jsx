@@ -1,10 +1,16 @@
 import './product-card.styles.scss'
 import Button,{BUTTON_TYPE_CLASSES} from '../button/button.component';
-import { CartContext } from '../../contexts/cart.context';
-import { useContext } from 'react';
+// import { CartContext } from '../../contexts/cart.context';
+// import { useContext } from 'react';
+
+import { useCartStore } from '../../zustand-store/cart/cart.store';
+import { useShallow } from 'zustand/shallow';
+
 const ProductCard = ({ product }) => {
     const { name,imageUrl, price } = product;
-    const{addItemToCart} = useContext(CartContext)
+    
+    // const{addItemToCart} = useContext(CartContext)
+    const addItemToCart = useCartStore(useShallow((state)=>state.addItemToCart))
     const onClickHandler = () => {  
         addItemToCart(product);
         

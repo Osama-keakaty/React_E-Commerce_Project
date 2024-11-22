@@ -1,27 +1,47 @@
-import {  useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './category.styles.scss'
 import { useParams } from 'react-router-dom';
 
 import ProductCard from '../../components/product-card/product-card.component';
-import { useSelector } from 'react-redux';
-import {selectCategories} from '../../store/category/categories.selector'
+// import { useSelector } from 'react-redux';
+// import {selectCategories} from '../../store/category/categories.selector'
+import { useShallow } from 'zustand/shallow';
+import { useCategoryStore } from '../../zustand-store/category/category.store';
+
 
 const Category = () => {
-    const  categoriesMap  = useSelector(selectCategories);
+    // const  categoriesMap  = useSelector(selectCategories);
+
+    const { categoriesMap, loading } = useCategoryStore(useShallow((state) => ({
+
+        categoriesMap: state.categoriesMap,
+        loading: state.loading,
+    })));
+
     const { category } = useParams();
     const [products, setProducts] = useState([]);
+
+
     useEffect(() => {
         setProducts(categoriesMap[category])
     }, [category, categoriesMap]);
+
     return (
-        <>
-        <h2 className='category-title'>{category}</h2>
-            <div className="category-Route-container">
-                {
-                    products.map((product => <ProductCard key={product.id} product={product} />))
-                }
-            </div>
-        </>
+        <div>
+            <h2 className='category-title'>{category}</h2>
+            {!loading ?
+                (<>
+                    <div className="category-Route-container">
+                        { Array.isArray(products) &&
+                            products.map((product => <ProductCard key={product.id} product={product} />))
+                        }
+                    </div>
+                </>) :
+                <div className='loader-container'>
+                <span className="loader"></span>
+                </div>
+            }
+        </div>
     );
 }
 export default Category;

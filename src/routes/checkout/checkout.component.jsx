@@ -1,10 +1,18 @@
 import './checkout.styles.scss'
 import CheckoutItem from '../../components/checkout-item/checkout-item.component';
-import { useContext } from 'react';
-import { CartContext } from '../../contexts/cart.context';
-
+// import { useContext } from 'react';
+// import { CartContext } from '../../contexts/cart.context';
+import { useCartStore } from '../../zustand-store/cart/cart.store';
+import { useShallow } from 'zustand/shallow';
 const Checkout = () => {
-    const { cartItems,totalItemPrice } = useContext(CartContext)
+
+    // const { cartItems,totalItemPrice } = useContext(CartContext)
+    const { cartItems,totalItemPrice } = useCartStore(useShallow((state)=>({
+        totalItemPrice: state.totalItemPrice,
+        cartItems: state.cartItems,
+
+
+    })))
     return (
         <div className="checkout-container ">
             <div className="checkout-header">

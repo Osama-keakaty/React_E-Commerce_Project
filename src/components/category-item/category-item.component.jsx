@@ -13,7 +13,10 @@ const CategoryItem = ({ category }) => {
                 backgroundImage: `url(${imageUrl})`
             }}/> */}
             {/* //TODO you have to pass imageUrl as a props and use it in style file */}
-            <BackgroundImage imageUrl={imageUrl}/>
+            {/* //! this will cause an error */}
+            {/* <BackgroundImage imageUrl={imageUrl}/> */}
+{/* //! instead use this solution  */}
+            <BackgroundImage style={{  backgroundImage: `url(${imageUrl})`}}/>
 
             <Body>
                 <h2>{title}</h2>

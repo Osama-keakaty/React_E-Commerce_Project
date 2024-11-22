@@ -1,4 +1,3 @@
-
 import { initializeApp } from 'firebase/app';
 import {
     getAuth,
@@ -19,7 +18,6 @@ import {
     query,
     getDocs
 } from 'firebase/firestore'
-
 
 //! bring our firebase sentance data
 const firebaseConfig = {
@@ -144,18 +142,31 @@ export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => 
 
 
 //! function to get categories from db
+// export const getCategoriesAndDocuments = async () => {
+//     const collectionRef = collection(db, 'categories');
+//     const q = query(collectionRef);
+//     const querySnapshot = await getDocs(q)
+//     return querySnapshot.docs.map((docSnapshot)=>docSnapshot.data());
+//     // const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
+//     //     const {title,items} =docSnapshot.data();
+//     //     acc[title.toLowerCase()]=items;
+//     //     return acc;
+//     // },{});
+//     // return categoryMap;
+// }  
 export const getCategoriesAndDocuments = async () => {
     const collectionRef = collection(db, 'categories');
     const q = query(collectionRef);
     const querySnapshot = await getDocs(q)
-    return querySnapshot.docs.map((docSnapshot)=>docSnapshot.data());
-    // const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
-    //     const {title,items} =docSnapshot.data();
-    //     acc[title.toLowerCase()]=items;
-    //     return acc;
-    // },{});
-    // return categoryMap;
-}  
+    const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
+        const {title,items} =docSnapshot.data();
+        acc[title.toLowerCase()]=items;
+        return acc;
+    },{});
+    return categoryMap;
+}
+
+
 
 // //! function to get categories from db ==== USING CONTEXT API ==== 
 // export const getCategoriesAndDocuments = async () => {

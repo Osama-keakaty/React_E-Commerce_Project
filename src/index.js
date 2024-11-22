@@ -4,15 +4,17 @@ import './index.scss';
 import App from './App';
 import { BrowserRouter } from "react-router-dom";
 import reportWebVitals from './reportWebVitals';
+// ! using context API 
 // import { UserProvider } from './contexts/user.context';
 // import { CategoriesProvider } from './contexts/category.context';
 import { CartProvider } from './contexts/cart.context'
-import {Provider} from 'react-redux'
-import {store} from './store/store'
+// ! using Redux
+// import {Provider} from 'react-redux'
+// import {store} from './store/store'
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-  <Provider store={store}>
+  {/* <Provider store={store}> */}
     <BrowserRouter>
       {/* <UserProvider> */}
         {/* <CategoriesProvider> */}
@@ -22,7 +24,7 @@ root.render(
         {/* </CategoriesProvider> */}
       {/* </UserProvider> */}
     </BrowserRouter>
-    </Provider>
+    {/* </Provider> */}
   </React.StrictMode>
 );
 
