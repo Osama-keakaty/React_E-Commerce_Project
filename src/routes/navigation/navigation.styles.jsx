@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+const minwidth= 568;
 export const NavigationContainer = styled.div`
    height: 70px;
    width: 100%;
@@ -10,10 +11,14 @@ export const NavigationContainer = styled.div`
 export const LogoContainer = styled(Link)`
  height: 100%;
  width: 70px;
- padding: 25px;
+ padding: 10px;
 `
 
 export const NavLinks = styled.div`
+@media (max-width: ${minwidth}px) {
+  width:60%;
+
+  }
 width: 50%;
 height: 100%;
 display: flex;
@@ -23,7 +28,15 @@ gap: 8px;
 `
 
 export const NavLink = styled(Link)`
+@media (max-width: ${minwidth}px) {
+font-size:14px;
+width:200px;
+padding:5px;
+}
 width: fit-content;
+display: flex;
+flex-wrap:wrap; 
+justify-content:center; 
 padding: 10px 15px;
 cursor: pointer;
 position: relative;

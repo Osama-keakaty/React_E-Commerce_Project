@@ -5,6 +5,7 @@ $min-width: 768px;
     @media (max-width: $min-width) {
         justify-content: center;
         gap: 10px;
+    // height: auto;
     }
     width: 100%;
     display: flex;
@@ -13,15 +14,17 @@ $min-width: 768px;
     padding: 15px 0;
     font-size: 20px;
     align-items: center;
+    // height: 30vh;
     justify-content: space-between;
     
     .image-container {
         width: 20%;
         padding-right: 15px;
-        
+        height:100%;
         img {
             width: 100%;
-            height: 100%;
+            height: 95%;
+            object-fit: cover;
         }
     }
     
