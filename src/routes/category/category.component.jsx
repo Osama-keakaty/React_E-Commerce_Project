@@ -3,6 +3,7 @@ import './category.styles.scss'
 import { useParams } from 'react-router-dom';
 
 import ProductCard from '../../components/product-card/product-card.component';
+import Spinner from '../../components/spinner/spinner.component';
 // import { useSelector } from 'react-redux';
 // import {selectCategories} from '../../store/category/categories.selector'
 import { useShallow } from 'zustand/shallow';
@@ -37,9 +38,7 @@ const Category = () => {
                         }
                     </div>
                 </>) :
-                <div className='loader-container'>
-                <span className="loader"></span>
-                </div>
+               <Spinner/>
             }
         </div>
     );

@@ -1,12 +1,16 @@
-import { Routes, Route } from "react-router-dom";
-import Home from './routes/home/home.component'
-import Navigation from './routes/navigation/navigation.component'
-import Authentication from './routes/authentication/authentication.component'
-import Shop from './routes/shop/shop.component'
-import Checkout from './routes/checkout/checkout.component'
-import { useEffect } from 'react';
+import { useEffect ,lazy,Suspense } from 'react';
+import { Routes, Route  } from "react-router-dom";
+// import Home from './routes/home/home.component'
+
+// import Navigation from './routes/navigation/navigation.component'
+
+// import Authentication from './routes/authentication/authentication.component'
+// import Shop from './routes/shop/shop.component'
+
+// import Checkout from './routes/checkout/checkout.component'
 
 // import { setCurrentUser } from "./store/user/user.action.js";
+
 // import { useDispatch } from "react-redux";
 // import { setCategories } from './store/category/categories.action';
 
@@ -17,6 +21,16 @@ import { useShallow } from "zustand/shallow";
 import { useUserStore } from "./zustand-store/user/user.store.js";
 import { useCategoryStore } from "./zustand-store/category/category.store.js";
 import { useCartStore } from "./zustand-store/cart/cart.store.js";
+import Spinner from './components/spinner/spinner.component.jsx';
+
+
+const Authentication = lazy(()=>import('./routes/authentication/authentication.component'))
+const Shop = lazy(()=>import('./routes/shop/shop.component'))
+const Navigation= lazy ( ()=> import('./routes/navigation/navigation.component'))
+const Home= lazy  (()=>import( './routes/home/home.component'))
+const Checkout= lazy(()=>import('./routes/checkout/checkout.component')) 
+
+
 const App = () => {
 
 //! using Redux 
@@ -94,7 +108,8 @@ const App = () => {
 
   return (
     <div className="App" >
-      <Routes>
+    <Suspense fallback = {<Spinner/>}>
+    <Routes>
         <Route path="/" element={<Navigation />}>
           <Route index element={<Home />} />
           {/* //! /* in shop allows the Shop component to render content based on the nested path or to manage its own nested routes. */}
@@ -103,6 +118,7 @@ const App = () => {
           <Route path="auth" element={<Authentication />} />
         </Route>
       </Routes>
+    </Suspense>
     </div>
   );
 }
